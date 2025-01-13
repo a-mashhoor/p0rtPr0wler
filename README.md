@@ -70,6 +70,13 @@ or as JSON data type, personally I prefer working with JSON data type.
 
 
 ## installation:
+**Dependency**
+the only dependency for this tool is pyfiglet
+installet using apt
+```shell
+sudo apt install python3-pyfiglet
+```
+
 **using the binary release!**
 
 You simply use the binary [Release](https://github.com/a-mashhoor/p0rtPr0wler/releases/download/v1.0.0/p0rtPr0wler)
