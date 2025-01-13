@@ -72,7 +72,7 @@ or as JSON data type, personally I prefer working with JSON data type.
 ## installation:
 **using the binary release!**
 
-You simply use the binary [Release](https://github.com/a-mashhoor/p0rtPr0wler/releases/download/v1.0.0/p0rtPr0lwer)
+You simply use the binary [Release](https://github.com/a-mashhoor/p0rtPr0wler/releases/download/v1.0.0/p0rtPr0wler)
 and give the executable permission to execute!
 
 ```shell
