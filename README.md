@@ -72,7 +72,7 @@ or as JSON data type, personally I prefer working with JSON data type.
 ## installation:
 **Dependency**
 the only dependency for this tool is pyfiglet
-installet using apt
+install it using apt before executing the tool
 ```shell
 sudo apt install python3-pyfiglet
 ```
