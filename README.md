@@ -94,7 +94,7 @@ $ python3 -m venv .env && source .env/bin/activate && pip install -r requiremnet
 
 ## Usage:
 With a simple `-h or --help` you can discover all the tool features
-![Help](https://github.com/a-mashhoor/p0rtPr0wler/blob/main/assets/help.png)
+![Help](https://github.com/a-mashhoor/p0rtPr0wler/blob/main/assets/usage.png)
 
 ### Example:
 for example, you can scan any IP or FQDN
