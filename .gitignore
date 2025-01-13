@@ -1,0 +1,11 @@
+__pychache__/
+testing/
+*.txt
+*.json
+*.swp
+*.swo
+__pycache__/
+.env/
+*.spec
+dist/
+build/
