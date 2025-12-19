@@ -7,12 +7,13 @@ from utils.scanner import *
 
 
 def main() -> NoReturn:
-    # read command line argument and parse them
-    args, parser = args_parser(ascii_art)
 
     if not is_root():
         print("\nTool uses raw socket for analyzing scan results, make sure you are root!\n")
         os._exit(1)
+
+    # read command line argument and parse them
+    args, parser = args_parser(ascii_art)
 
     # if silent arg is on forwarding all of stdout output to null!
     if args.silent:

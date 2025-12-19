@@ -1,5 +1,9 @@
 from . import *
+import subprocess
+import os, pwd, grp
 from classes.customExceptionsClass import PrvIpFindError, GatewayFindError
+
+
 
 """ General Functions """
 
@@ -10,23 +14,87 @@ def ascii_art() -> NoReturn:
     print(f'\033[1;36m{banner_1} \n \033[1;31m{banner_2}\033[0m')
     print("Author: Arshia Mashhoor\ngithub: https://github.com/a-mashhoor/p0rtPr0wler\n")
 
-# Cheking user sudo/admin privilages for performing udp test althogh the tool for now only supports
-# Unix based/like OS linux/mac/BSD...
+
 def is_root() -> bool:
-    if os.name == 'nt':
+    """
+    Cheking user sudo/admin privilages for performing udp test althogh the tool for now only supports
+    Unix based/like OS linux/mac/BSD...
+
+    This is script is ment to run on linux , its only tested on linux thus we
+    only test for linux :)
+
+    Detect if the script is running with root privileges using multiple checks.
+    Logs detailed information about the user, group membership, and execution method.
+
+    Returns:
+        bool: True if the script is running as root, False otherwise.
+    """
+    try:
+        effective_uid = os.geteuid()
+        if effective_uid != 0:
+            print(f"Not running as root: Effective UID is {effective_uid}.")
+            return False
+
+        real_user_id = os.getuid()
+        real_user_name = pwd.getpwuid(real_user_id).pw_name
+        real_groups = [grp.getgrgid(gid).gr_name for gid in os.getgroups()]
+
+        is_sudo = 'SUDO_USER' in os.environ
+        if is_sudo:
+            sudo_user = os.environ.get('SUDO_USER', 'unknown')
+            #print(f"Script is running via sudo. Sudo user: {sudo_user}, Real user: {real_user_name}, Groups: {real_groups}")
+        else:
+            pass
+            #print(f"Script is running as root directly. User: {real_user_name}, Groups: {real_groups}")
+
+        if real_user_name != "root":
+            print(f"Real user is not root: User is {real_user_name}.")
+            if not is_sudo:
+                print("Not running as root and not via sudo.")
+                return False
+
         try:
-            # only windows users with admin privileges can read the C:\windows\temp
-            temp = os.listdir(os.sep.join([os.environ.get('SystemRoot','C:\\windows'),'temp']))
-        except:
+            root_group = grp.getgrnam('root').gr_gid
+            if root_group not in os.getgroups():
+                print(f"Not a member of the root group: Groups are {real_groups}.")
+                return False
+        except KeyError:
+            print("Root group not found on this system.")
             return False
-        else:
-            return True
-    #cheking for mac os or linux
-    else:
-        if 'SUDO_USER' in os.environ and os.geteuid() == 0:
-            return True
-        else:
+        except Exception as e:
+            print(f"Error checking group membership: {e}")
             return False
+
+        try:
+            # Test if `sudo` is available and functional (if not running as direct root)
+            if not is_sudo:
+                result = subprocess.run(
+                    ["sudo", "-n", "true"],  # Non-interactive test
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                    check=True
+                )
+                if result.returncode == 0:
+                    print("Sudo privileges confirmed.")
+                else:
+                    print("Sudo privileges not available.")
+                    return False
+        except subprocess.CalledProcessError:
+            print("Sudo privileges not available.")
+            return False
+        except Exception as e:
+            print(f"Error testing sudo privileges: {e}")
+            return False
+
+        #print("Root privileges confirmed.")
+        return True
+
+    except Exception as e:
+        print(f"Error during root detection: {e}")
+        return False
+
+
 
 #internet connection test what way is better to check google!
 def internet_connection() -> bool:
